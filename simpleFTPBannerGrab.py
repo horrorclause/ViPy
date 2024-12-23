@@ -26,7 +26,7 @@ def checkVulnBanner(banner):
         if known_banner in banner:
             return banner
         
-    return f'Not vulnerable or invalid response: {banner}'
+    return f'Not vulnerable or invalid response --> {banner}'
 
 # Main function that contains the IPs and domains to check  
 def main():
