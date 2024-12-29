@@ -31,6 +31,7 @@ def checkVulnBanner(banner):
 # Main function that contains the IPs and domains to check  
 def main():
     port = 21
+    portList = [21,22,25,80,110]
     
     ips_to_check= {
         "ftptest.net" :  '49.12.121.47',
@@ -42,13 +43,15 @@ def main():
     
     
     for domain, ip in ips_to_check.items():
-        response_banner = retBanner(ip, port)
-        if response_banner:
-            result = checkVulnBanner(response_banner)
-        else:
-            result = "Not vulnerable or could not retrieve the banner."
-            
-        print(f'[+] {domain} : {result}')
+        for port in portList:
+            response_banner = retBanner(ip, port)
+            if response_banner:
+                result = checkVulnBanner(response_banner)
+            else:
+                result = "Not vulnerable or could not retrieve the banner."
+                
+            print(f'[+] Domain: {domain} IP: {ip} Port: {port}  Result {result}')
+        print('\n')
 
 
 if __name__ == '__main__':
