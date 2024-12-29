@@ -1,3 +1,6 @@
+## There is an issue with iterating through multiple ports
+
+
 import optparse
 import socket
 from socket import *
@@ -36,23 +39,32 @@ def portScan(tgtHost, tgtPorts):
         print(f'Scanning port {tgtPort}')
         connScan(tgtHost, int(tgtPort))
         
-                
 
+#TODO: Fix the issue with not being able to iterate through ports.
 # Uses optParse to instruct on script usage
 def main():
-    parser = optparse.OptionParser('usage %prog -H ' + '<target host> -p <target port>')
+    parser = optparse.OptionParser('usage %prog -H ' + '<target host> -p <target port>, <target port>')
     parser.add_option('-H', dest='tgtHost', type='string', help='specify target host')
-    parser.add_option('-p', dest='tgtPort', type='int', help='specify target port')
+    parser.add_option('-p', dest='tgtPort', type='string', help='specify target port(s) separated by comma')
 
     (options, args) = parser.parse_args()
 
     tgtHost=options.tgtHost
-    tgtPorts=str(options.tgtPort).split(', ')
-
-    if (tgtHost == None) | (tgtPorts == None):
-        print('[-] You must specify a target host name and port[s].')
+    if options.tgtPort:
+        tgtPorts=options.tgtPort.split(", ")
+    else:
+        tgtPorts=[]
+    
+    print(tgtPorts)
+    
+        
+    if not tgtHost or tgtPorts:
+        print('[-] You must specify a host and a port.')
         print(parser.usage)
         exit(0)
+    
+    tgtPorts= [port.strip() for port in tgtPorts]
+
         
     portScan(tgtHost, tgtPorts)
 
